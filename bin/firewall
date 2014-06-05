@@ -1,0 +1,43 @@
+#!/bin/sh
+IPT=/sbin/iptables
+IP6T=/sbin/ip6tables
+ADMIN="127.0.0.1"
+
+echo "Enabling Firewall"
+
+$IPT --flush
+$IP6T --flush
+
+# IPv4 rules
+
+$IPT -P INPUT DROP
+$IPT -P OUTPUT DROP
+$IPT -P FORWARD DROP
+
+$IPT -I INPUT -j ACCEPT -p icmp --icmp-type echo-request
+
+$IPT -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+$IPT -A OUTPUT -m state --state NEW,RELATED,ESTABLISHED -j ACCEPT
+
+$IPT -A INPUT -i lo -j ACCEPT
+$IPT -A OUTPUT -o lo -j ACCEPT
+
+#$IPT -A INPUT -p tcp --dport 22 -s $ADMIN -j ACCEPT
+#allow 22 from any, to lock down, use above line and define ADMIN
+$IPT -A INPUT -p tcp --dport 22 -s $ADMIN -j ACCEPT
+
+$IPT -A INPUT -j DROP
+
+# IPv6 rules
+
+$IP6T -P INPUT DROP
+$IP6T -P OUTPUT DROP
+$IP6T -P FORWARD DROP
+
+$IP6T -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+$IP6T -A OUTPUT -m state --state NEW,RELATED,ESTABLISHED -j ACCEPT
+
+$IP6T -A INPUT -i lo -j ACCEPT
+$IP6T -A OUTPUT -o lo -j ACCEPT
+
+$IP6T -A INPUT -j DROP
