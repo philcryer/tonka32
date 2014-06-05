@@ -25,7 +25,7 @@ and then later
 http://konstruktoid.net/2014/04/29/hardening-the-ubuntu-14-04-server-even-further/
  
 4) while it's cool ppl are rolling this into chef/puppet, I want a single script I can curl -o /tmp/script|sh - and run on any system to get the hardening setup automagically. Chef/puppet could call that script to do the dirty work still, but this way tons more servers could get locked down *considerable* more. 
- 
-5) witty script name TBA
- 
-6)
+
+5) only support debian 7+ and ubuntu 14.04?
+
+6) witty script name TBA
