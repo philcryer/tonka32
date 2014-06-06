@@ -7,7 +7,7 @@ baseurl="https://raw.githubusercontent.com/philcryer/tonka32/"
 ipv6_off="1"
 
 # PROGRAM START
-echo " *** starting"; sleep 1
+echo " *** starting: host `hostname` is running `cat /etc/issue.net`"; sleep 1
 
 # ROOT CHECK
 echo " *** checking permissions"
@@ -15,9 +15,6 @@ if [[ $EUID -ne 0 ]]; then
 	echo "	--- FAIL ---- This script must be run as root (you can trust me, right?)" 1>&2
 	exit 1
 fi
-
-# SUMMARY
-echo " *** host `hostname` is running `cat /etc/issue.net`"
 
 # IPV6
 if [[ $ipv6_off -eq 1 ]]; then
@@ -75,7 +72,7 @@ fi
 # AUDITD
 echo " *** install auditd if it's not already installed"
 if [ ! -f '/sbin/auditd' ]; then
-	 apt-get install auditd audispd-plugins
+	 apt-get -yy install auditd audispd-plugins
 	# tell grub about it
 	sed -i -e 's/GRUB_CMDLINE_LINUX="/&audit=1/' /etc/default/grub
 	# tell initrd to update
