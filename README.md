@@ -4,12 +4,11 @@ tonka32
 ## goal
 working prototype of a script I want to run and lockdown many things in a default linux install, automatically. Sample one liner...
 
-    wget -O /tmp/runner.sh https://raw.githubusercontent.com/philcryer/tonka32/master/runner.sh;cd /tmp; chmod 755 runner.sh; ./runner.sh
+    wget https://raw.githubusercontent.com/philcryer/tonka32/master/oneshot.sh | sh oneshot.sh
 
 (by default debian doesn't have curl installed (we'll install it next, but if you do/will have curl installed, you can use)
     
-    curl 
-    curl -o https://raw.githubusercontent.com/philcryer/tonka32/master/runner.sh;cd /tmp; chmod 755 runner.sh; ./runner.sh
+    curl https://raw.githubusercontent.com/philcryer/tonka32/master/oneshot.sh | sh
     
 after that it should run, reboot and you'll have a much safer base server env
 

@@ -12,7 +12,7 @@ echo " *** starting on host `hostname` which is running `cat /etc/issue.net`"; s
 # ROOT CHECK
 echo " *** checking permissions"
 if [[ $EUID -ne 0 ]]; then
-	echo "	--- FAIL ---- This script must be run as root (you can trust me, right?)" 1>&2
+	echo " --- FAIL ---- This script must be run as root (you can trust me, right?)" 1>&2
 	exit 1
 fi
 
