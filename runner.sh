@@ -31,7 +31,7 @@ echo " *** installing/verifying we have needed software (an error wouldn't be un
 echo "     (libpam-tmpdir, libpam-cracklib, apparmor-profiles, ntp, openssh-server)"
 apt-get -yy install libpam-tmpdir libpam-cracklib apparmor-profiles ntp openssh-server
 
-if [ `grep -L "security=apparmor" /etc/default/grub; echo $?` == '1' ]; then
+if [ `grep -q "security=apparmor" /etc/default/grub; echo $?` == '1' ]; then
 	echo " *** fix the error by putting apparmor line in grub and rebooting"
 	sed -i -e 's/GRUB_CMDLINE_LINUX_DEFAULT="/&security=apparmor /' /etc/default/grub
 	update-grub
