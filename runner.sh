@@ -29,7 +29,7 @@ if [[ $ipv6_off -eq 1 ]]; then
 		echo net.ipv6.conf.lo.disable_ipv6=1 >> /etc/sysctl.d/disableipv6.conf
 		echo net.ipv6.conf.vboxnet0.disable_ipv6=1 >> /etc/sysctl.d/disableipv6.conf
 		echo net.ipv6.conf.ppp0.disable_ipv6=1 >> /etc/sysctl.d/disableipv6.conf
-		echo net.ipv6.conf.tun0.disable_ipv6=1 >> >> /etc/sysctl.d/disableipv6.conf
+		echo net.ipv6.conf.tun0.disable_ipv6=1 >> /etc/sysctl.d/disableipv6.conf
 		# tell modprobe about it
 		echo "alias net-pf-10 off" >> /etc/modprobe.d/aliases.conf
 		echo "alias ipv6 off" >> /etc/modprobe.d/aliases.conf
