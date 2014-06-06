@@ -1,4 +1,25 @@
 #!/bin/sh
+# sudo update-rc.d firewall defaults
+#description	"Skeleton firewall"
+#start on (starting network-interface or starting network-manager or starting networking) 
+#stop on runlevel [!023456]
+#console output
+#pre-start exec /etc/init.d/firewall start
+
+### BEGIN INIT INFO
+# Provides:          firewall
+# Required-Start:    $remote_fs $syslog $named $network $time
+# Required-Stop:     $remote_fs $syslog $named $network
+# Should-Start:      
+# Should-Stop:       
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: skeleton firewall
+# Description:       skeleton firewall
+### END INIT INFO
+
+set -e
+
 IPT=/sbin/iptables
 IP6T=/sbin/ip6tables
 ADMIN="127.0.0.1"
@@ -23,12 +44,12 @@ $IPT -A INPUT -i lo -j ACCEPT
 $IPT -A OUTPUT -o lo -j ACCEPT
 
 #$IPT -A INPUT -p tcp --dport 22 -s $ADMIN -j ACCEPT
-#allow 22 from any, to lock down, use above line and define ADMIN
+#allow 22 from any, to lock down, use above line and define ADMIN above
 $IPT -A INPUT -p tcp --dport 22 -s $ADMIN -j ACCEPT
 
 $IPT -A INPUT -j DROP
 
-# IPv6 rules
+# IPv6 rules # these will work, but won't do anything if ipv6 is disabled
 
 $IP6T -P INPUT DROP
 $IP6T -P OUTPUT DROP
@@ -41,3 +62,4 @@ $IP6T -A INPUT -i lo -j ACCEPT
 $IP6T -A OUTPUT -o lo -j ACCEPT
 
 $IP6T -A INPUT -j DROP
+
