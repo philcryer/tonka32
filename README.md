@@ -16,15 +16,11 @@ After it runs successfully, your system will reboot and come up with all the cha
 
 ### tasks
 
-When run, this script automatically makes many *serious changes* to the Linux install, in an effort to lock it down. Notice that this happens *without any prompts*, so you want to know what it does, to what, and how, before you run it. These days, I'm assuming you're running a VM or something immutable that is not going to be around long (it's easier to fix something in the provision and just spin out a new instance) so instead, we use this to make a best practices setup, and WHEN we need to change things later we'll just use a fresh VM. 
+When run, this script automatically makes many *serious changes* to the Linux install, in an effort to lock it down. Notice that this happens *without any prompts*, so you want to know what it does, to what, and how, before you run it. (testing in Vagrant is highly recommended) These days, I'm assuming you're running a VM or something immutable that is not going to be around long (it's easier to fix something in the provision and just spin out a new instance) so instead, we use this to make a best practices setup, and WHEN we need to change things later we'll just use a fresh VM. 
 
 * diables IPv6 (override in config)
 * updates package cache
 * installs curl
-* sets up a basic firewall that ONLY allows port 22 (optional: lock down to allow access from only one IP)
-* installs libpam-tmpdir, libpam-cracklib, apparmor-profiles, ntp, openssh-server that will get used/configured later
-* enables apparmor in grub if it's not already, and reboots to test and enable it
-	- tells rc.local to restart the script once up so it can get to the other tasks
 * Remove packages with known issues
 	- xinetd (NSA, Chapter 3.2.1)
 	- inetd (NSA, Chapter 3.2.1)
@@ -32,7 +28,11 @@ When run, this script automatically makes many *serious changes* to the Linux in
 	- ypserv (NSA, Chapter 3.2.4)
 	- telnet-server (NSA, Chapter 3.2.2)
 	- rsh-server (NSA, Chapter 3.2.3)
-* ... setup linux auditd with a custom ruleset
+* sets up a basic firewall that ONLY allows port 22 (optional: lock down to allow access from only one IP)
+* installs libpam-tmpdir, libpam-cracklib, apparmor-profiles, ntp, openssh-server that will get used/configured later
+* enables apparmor in grub if it's not already, and reboots to test and enable it
+	- tells rc.local to restart the script once up so it can get to the other tasks
+* sets up linux auditd with a custom ruleset
 
 ### other tasks (soon) to be implemented
 * ... harden ssh config
