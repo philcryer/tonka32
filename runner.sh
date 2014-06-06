@@ -35,8 +35,9 @@ if [ `grep -q "security=apparmor" /etc/default/grub; echo $?` == '1' ]; then
 	echo " *** fix the error by putting apparmor line in grub and rebooting"
 	sed -i -e 's/GRUB_CMDLINE_LINUX_DEFAULT="/&security=apparmor /' /etc/default/grub
 	update-grub
-	sed -i -e 's/exit 0//' /etc/rc.local
-	echo "cd /tmp; ./runner.sh" >> /etc/rc.local
+	#sed -i -e 's/exit 0//' /etc/rc.local
+	sed -i -e '/exit 0/d' /etc/rc.local
+	#echo "cd /tmp; ./runner.sh" >> /etc/rc.local
 	echo "wget -O /tmp/runner.sh $baseurl/master/runner.sh; cd /tmp; chmod 755 runner.sh; ./runner.sh" >> /etc/rc.local
 	echo "exit 0" >> /etc/rc.local
 	echo " *** rebooting"
@@ -45,5 +46,8 @@ fi
 
 echo " *** more comming soon..."
 touch /tmp/runner_ran
+
+echo " *** clean rc.local if neccessary"
+sed -i -e '/wget/d' /etc/rc.local
 
 exit 0
