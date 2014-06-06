@@ -6,7 +6,7 @@ A working prototype of a script that automatically lockdowns many things in a de
 
 Get it in run it in with this one liner:
 
-    wget https://raw.githubusercontent.com/philcryer/tonka32/master/bin/oneshot.sh | sh oneshot.sh
+    wget https://raw.githubusercontent.com/philcryer/tonka32/master/bin/oneshot.sh; sh oneshot.sh
 
 By default Debian doesn't have <pre>curl</pre> installed, but if you do, you can use this one liner:
     
