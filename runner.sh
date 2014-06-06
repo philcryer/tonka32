@@ -3,6 +3,7 @@
 set -e
 
 baseurl="https://raw.githubusercontent.com/philcryer/tonka32/"
+ipv6_off="1"
 
 echo " *** starting"; sleep 1
 
@@ -10,6 +11,16 @@ echo " *** checking permissions"
 if [[ $EUID -ne 0 ]]; then
 	echo "	--- FAIL ---- This script must be run as root (you can trust me, right?)" 1>&2
 	exit 1
+fi
+
+if [[ $ipv6_off -eq 1 ]]; then
+	echo " *** disabling IPV6 (override this in config above)"
+	echo net.ipv6.conf.all.disable_ipv6=1 > /etc/sysctl.d/disableipv6.conf
+	sed '/::/s/^/#/' /etc/hosts >/etc/dipv6-tmp;cp -a /etc/hosts /etc/hosts-backup && mv /etc/dipv6-tmp /etc/hosts
+	# only if we have avahi installed...
+	if [ -d '/etc/avahi' ]; then
+		sed '/ipv6=yes/s/yes/no/' /etc/avahi/avahi-daemon.conf >/etc/avahi/dipv6-tmp;cp -a /etc/avahi/avahi-daemon.conf /etc/avahi/avahi-daemon.conf-backup && mv /etc/avahi/dipv6-tmp /etc/avahi/avahi-daemon.conf
+	fi
 fi
 
 echo " *** updating package cache"

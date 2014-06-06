@@ -16,6 +16,7 @@ after that it should run, reboot and you'll have a much safer base server env
 
 When run, this script automatically makes serious changes to the Linux install, in an effort to lock it down. Notice that this happens without any prompts, so you want to know what it does, to what, and how, before you run it. These days, I'm assuming you're running a VM or something that is not going to be around for 10 years, so instead, let's make a best practices setup, then change things if we need to later and refresh on a new VM. Some task...
 
+* diables IPv6 (override in config)
 * updates package cache
 * installs curl
 * sets up a basic firewall that ONLY allows port 22 (optional: lock down to allow access from only one IP)
