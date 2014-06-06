@@ -7,7 +7,7 @@ baseurl="https://raw.githubusercontent.com/philcryer/tonka32/"
 ipv6_off="1"
 
 # PROGRAM START
-echo " *** starting on host `hostname` which is running `cat /etc/issue.net`"; sleep 1
+echo " *** starting on host `hostname` running `cat /etc/issue.net`"; sleep 1
 
 # ROOT CHECK
 echo " *** checking permissions"
@@ -18,7 +18,7 @@ fi
 
 # IPV6
 if [[ $ipv6_off -eq 1 ]]; then
-	echo " *** disabling IPV6 (override in variable section)"
+	echo " *** disabling IPV6 (override in variables section)"
 	if [ ! -f '/etc/sysctl.d/disableipv6.conf' ]; then
 		# tell sysctl about it
 		echo net.ipv6.conf.all.disable_ipv6=1 > /etc/sysctl.d/disableipv6.conf

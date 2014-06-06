@@ -2,19 +2,21 @@ tonka32
 =======
 
 ## goal
-working prototype of a script I want to run and lockdown many things in a default linux install, automatically. Sample one liner...
+A working prototype of a script that automatically lockdowns many things in a default linux install.
 
-    wget https://raw.githubusercontent.com/philcryer/tonka32/master/oneshot.sh | sh oneshot.sh
+Get it in run it in with this one liner:
 
-(by default debian doesn't have curl installed (we'll install it next, but if you do/will have curl installed, you can use)
+    wget https://raw.githubusercontent.com/philcryer/tonka32/master/bin/oneshot.sh | sh oneshot.sh
+
+By default Debian doesn't have <pre>curl</pre> installed, but if you do, you can use this one liner:
     
-    curl https://raw.githubusercontent.com/philcryer/tonka32/master/oneshot.sh | sh
+    curl https://raw.githubusercontent.com/philcryer/tonka32/master/bin/oneshot.sh | sh
     
-after that it should run, reboot and you'll have a much safer base server env
+After it runs successfully, your system will reboot and come up with all the changes listed below.
 
 ### tasks
 
-When run, this script automatically makes serious changes to the Linux install, in an effort to lock it down. Notice that this happens without any prompts, so you want to know what it does, to what, and how, before you run it. These days, I'm assuming you're running a VM or something that is not going to be around for 10 years, so instead, let's make a best practices setup, then change things if we need to later and refresh on a new VM. Some task...
+When run, this script automatically makes many *serious changes* to the Linux install, in an effort to lock it down. Notice that this happens *without any prompts*, so you want to know what it does, to what, and how, before you run it. These days, I'm assuming you're running a VM or something immutable that is not going to be around long (it's easier to fix something in the provision and just spin out a new instance) so instead, we use this to make a best practices setup, and WHEN we need to change things later we'll just use a fresh VM. 
 
 * diables IPv6 (override in config)
 * updates package cache
@@ -23,10 +25,6 @@ When run, this script automatically makes serious changes to the Linux install, 
 * installs libpam-tmpdir, libpam-cracklib, apparmor-profiles, ntp, openssh-server that will get used/configured later
 * enables apparmor in grub if it's not already, and reboots to test and enable it
 	- tells rc.local to restart the script once up so it can get to the other tasks
-* ... other tasks to be implemented
-* ... harden ssh config
-* ... Configures package management e.g. allows only signed packages
-* ... configure pkg management to update security fixes automatically
 * Remove packages with known issues
 	- xinetd (NSA, Chapter 3.2.1)
 	- inetd (NSA, Chapter 3.2.1)
@@ -34,6 +32,12 @@ When run, this script automatically makes serious changes to the Linux install, 
 	- ypserv (NSA, Chapter 3.2.4)
 	- telnet-server (NSA, Chapter 3.2.2)
 	- rsh-server (NSA, Chapter 3.2.3)
+* ... setup linux auditd with a custom ruleset
+
+### other tasks (soon) to be implemented
+* ... harden ssh config
+* ... Configures package management e.g. allows only signed packages
+* ... configure pkg management to update security fixes automatically
 * ... Configures pam and pam_limits module
 * ... Shadow password suite configuration
 * ... Configures system path permissions
@@ -52,26 +56,21 @@ When run, this script automatically makes serious changes to the Linux install, 
 * ... set security limits in limits.conf
 * ... setup stricter fstab mount options
 * ... remove suid bits
-* ... setup linux auditd
-	- custom rules pulled in
-* 
+
+### feedback
+
+Is this a perfect script? No way, if you know a better way to do something or think something I've done is bad, open an [https://github.com/philcryer/tonka32/issues](issue) for it and share your thoughts, *or for bonus points*, make a [https://github.com/blog/712-pull-requests-2-0](pull request!)
 
 ### background
-1) read about some great chef recipes that auto hardened ssh and the OS for you...
+1) I read about some great chef recipes that auto hardened ssh and the OS for you...
+* https://github.com/TelekomLabs/chef-ssh-hardening
+* https://github.com/TelekomLabs?query=hardening
  
-https://github.com/TelekomLabs/chef-ssh-hardening
-
-https://github.com/TelekomLabs?query=hardening
- 
-2) these were influenced by some of these links
- 
-https://wiki.archlinux.org/index.php/Sysctl
-
-http://www.nsa.gov/ia/_files/os/redhat/rhel5-guide-i731.pdf
-
-https://github.com/TelekomLabs/chef-os-hardening
-
-https://wiki.ubuntu.com/Security/Features
+2) I found that these were influenced by some of these links
+* https://wiki.archlinux.org/index.php/Sysctl
+* http://www.nsa.gov/ia/_files/os/redhat/rhel5-guide-i731.pdf
+* https://github.com/TelekomLabs/chef-os-hardening
+* https://wiki.ubuntu.com/Security/Features
  
 3) then I found another post, this about hardening at the base install
 http://konstruktoid.net/2014/04/25/creating-a-baseline-ubuntu-14-04-server/
@@ -84,3 +83,26 @@ http://konstruktoid.net/2014/04/29/hardening-the-ubuntu-14-04-server-even-furthe
 5) only support debian 7+ and ubuntu 14.04? (some places use centos and rhels, maybe support those, but only at 6.5)
 
 6) witty script name TBA
+
+### license
+The MIT License (MIT)
+
+Copyright (c) 2014 Phil Cryer (phil@philcryer.com)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
