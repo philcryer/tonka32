@@ -5,6 +5,7 @@ set -e
 # VARIABLES
 baseurl="https://raw.githubusercontent.com/philcryer/tonka32/"
 ipv6_off="1"
+export baseurl; export ipv6_off
 
 # PROGRAM START
 echo " *** starting: host `hostname` is running `cat /etc/issue.net`"; sleep 1

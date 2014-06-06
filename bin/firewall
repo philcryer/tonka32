@@ -21,13 +21,13 @@
 set -e
 
 IPT=/sbin/iptables
-IP6T=/sbin/ip6tables
+#IP6T=/sbin/ip6tables
 ADMIN="127.0.0.1"
 
 echo "Enabling Firewall"
 
 $IPT --flush
-$IP6T --flush
+#$IP6T --flush
 
 # IPv4 rules
 
@@ -51,15 +51,14 @@ $IPT -A INPUT -j DROP
 
 # IPv6 rules # these will work, but won't do anything if ipv6 is disabled
 
-$IP6T -P INPUT DROP
-$IP6T -P OUTPUT DROP
-$IP6T -P FORWARD DROP
+#$IP6T -P INPUT DROP
+#$IP6T -P OUTPUT DROP
+#$IP6T -P FORWARD DROP
 
-$IP6T -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
-$IP6T -A OUTPUT -m state --state NEW,RELATED,ESTABLISHED -j ACCEPT
+#$IP6T -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+#$IP6T -A OUTPUT -m state --state NEW,RELATED,ESTABLISHED -j ACCEPT
 
-$IP6T -A INPUT -i lo -j ACCEPT
-$IP6T -A OUTPUT -o lo -j ACCEPT
+#$IP6T -A INPUT -i lo -j ACCEPT
+#$IP6T -A OUTPUT -o lo -j ACCEPT
 
-$IP6T -A INPUT -j DROP
-
+#$IP6T -A INPUT -j DROP
