@@ -2,6 +2,7 @@ tonka32
 =======
 
 ## goal
+
 A working prototype of a script that automatically lockdowns many things in a default linux install.
 
 Get it in run it in with this one liner:
@@ -59,7 +60,7 @@ When run, this script automatically makes many *serious changes* to the Linux in
 
 ### feedback
 
-Is this a perfect script? No way, if you know a better way to do something or think something I've done is bad, open an [issue](https://github.com/philcryer/tonka32/issues) for it and share your thoughts, *or for bonus points*, make a [https://github.com/blog/712-pull-requests-2-0](pull request!)
+Is this a perfect script? No way, if you know a better way to do something or think something I've done is bad, open an [issue](https://github.com/philcryer/tonka32/issues) for it and share your thoughts, *or for bonus points*, make a [pull request!](https://github.com/blog/712-pull-requests-2-0)
 
 ### background
 1) I read about some great chef recipes that auto hardened ssh and the OS for you...
@@ -78,7 +79,7 @@ http://konstruktoid.net/2014/04/25/creating-a-baseline-ubuntu-14-04-server/
 and then later fromt he same author
 http://konstruktoid.net/2014/04/29/hardening-the-ubuntu-14-04-server-even-further/
  
-4) while it's cool ppl are rolling this into chef/puppet, I want a single script I can curl -o /tmp/script|sh - and run on any system to get the hardening setup automagically. Chef/puppet could call that script to do the dirty work still, but this way tons more servers could get locked down *considerable* more. 
+4) while it's cool ppl are rolling this into chef/puppet, I want a single script I can curl -o /tmp/script|sh - and run on any system to get the hardening setup automagically. Chef/puppet could call that script to do the dirty work still, but this way tons more servers can get locked down *considerably* easier. 
 
 5) only support debian 7+ and ubuntu 14.04? (some places use centos and rhels, maybe support those, but only at 6.5)
 
