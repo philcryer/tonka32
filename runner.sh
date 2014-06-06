@@ -57,7 +57,7 @@ echo " *** updating package cache"
 apt-get -yy update
 
 # VULNRABLE SERVICES
-echo " *** removing known vulnerable services (these shouldn't be installed)"
+echo " *** removing known vulnerable services (these shouldn't be installed, it's freaking `date +%Y`!)"
 apt-get -yy purge rsh-server
 apt-get -yy purge xinetd
 apt-get -yy purge tftpd
@@ -117,8 +117,11 @@ fi
 echo " *** cleaning unneeded downloads"
 apt-get -yy autoremove; apt-get -yy clean; apt-get -yy autoclean
 
-# COMPLETE, ENDING
+# COMPLETE
 echo " *** all tasks completed"
+
+# REBOOT (aka drop test of the above changes)
 echo " *** rebooting to enable all new settings and to test"
 /sbin/reboot
+
 exit 0
