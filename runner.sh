@@ -5,10 +5,9 @@ set -e
 # VARIABLES
 baseurl="https://raw.githubusercontent.com/philcryer/tonka32/"
 ipv6_off="1"
-export baseurl; export ipv6_off
 
 # PROGRAM START
-echo " *** starting: host `hostname` is running `cat /etc/issue.net`"; sleep 1
+echo " *** starting on host `hostname` which is running `cat /etc/issue.net`"; sleep 1
 
 # ROOT CHECK
 echo " *** checking permissions"
@@ -81,7 +80,8 @@ if [ ! -f '/sbin/auditd' ]; then
 	# regenerate grub
 	update-grub
 	# get rules
-     	curl $baseurl/master/etc/audit.rules -o /etc/audit/audit.rules
+     	#curl $baseurl/master/etc/audit.rules -o /etc/audit/audit.rules
+     	cp etc/audit.rules /etc/audit/audit.rules
 	# start it on boot
 	update-rc.d auditd defaults
 fi
@@ -89,7 +89,8 @@ fi
 # FIREWALL
 echo " *** creating a *basic* firewall, only allowing 22 by default"
 if [ ! -f '/etc/init.d/firewall' ]; then
-     	curl $baseurl/master/bin/firewall -o /etc/init.d/firewall
+     	#curl $baseurl/master/bin/firewall -o /etc/init.d/firewall
+     	cp bin/firewall /etc/init.d/firewall
 	# make executable
 	chmod 755 /etc/init.d/firewall
 	# start it on boot
