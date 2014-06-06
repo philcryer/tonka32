@@ -122,6 +122,6 @@ echo " *** all tasks completed"
 
 # REBOOT (aka drop test of the above changes)
 echo " *** rebooting to enable all new settings and to test"
-/sbin/reboot
+/sbin/reboot; echo
 
 exit 0
