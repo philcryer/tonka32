@@ -42,6 +42,7 @@ if [ `grep -q "security=apparmor" /etc/default/grub; echo $?` == '1' ]; then
 	echo "exit 0" >> /etc/rc.local
 	echo " *** rebooting"
 	/sbin/reboot
+	exit 0
 fi
 
 echo " *** more comming soon..."
