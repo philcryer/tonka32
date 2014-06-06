@@ -37,11 +37,13 @@ if [ `grep -q "security=apparmor" /etc/default/grub; echo $?` == '1' ]; then
 	update-grub
 	sed -i -e 's/exit 0//' /etc/rc.local
 	echo "cd /tmp; ./runner.sh" >> /etc/rc.local
+	echo "wget -O /tmp/runner.sh $baseurl/master/runner.sh; cd /tmp; chmod 755 runner.sh; ./runner.sh" >> /etc/rc.local
 	echo "exit 0" >> /etc/rc.local
 	echo " *** rebooting"
 	/sbin/reboot
 fi
 
 echo " *** more comming soon..."
+touch /tmp/runner_ran
 
 exit 0
