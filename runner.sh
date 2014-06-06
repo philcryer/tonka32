@@ -9,7 +9,7 @@ ipv6_off="1"
 # PROGRAM START
 echo " *** starting"; sleep 1
 
-# ARE YOU ROOT?
+# ROOT CHECK
 echo " *** checking permissions"
 if [[ $EUID -ne 0 ]]; then
 	echo "	--- FAIL ---- This script must be run as root (you can trust me, right?)" 1>&2
@@ -21,7 +21,7 @@ echo " *** host `hostname` is running `cat /etc/issue.net`"
 
 # IPV6
 if [[ $ipv6_off -eq 1 ]]; then
-	echo " *** disabling IPV6 (override in variables above)"
+	echo " *** disabling IPV6 (override in variable section)"
 	if [ ! -f '/etc/sysctl.d/disableipv6.conf' ]; then
 		# tell sysctl about it
 		echo net.ipv6.conf.all.disable_ipv6=1 > /etc/sysctl.d/disableipv6.conf
@@ -50,39 +50,70 @@ if [[ $ipv6_off -eq 1 ]]; then
 		sed -i -e 's/GRUB_CMDLINE_LINUX_DEFAULT="/&ipv6.disable=1 /' /etc/default/grub
 		# tell initrd to update
 		update-initramfs -u
+		# regenerate grub
+		update-grub
 	fi
 fi
 
-# UPDATE PACKAGE CACHE
+# PACKAGE CACHE
 echo " *** updating package cache"
 apt-get -yy update
 
-# INSTALL CURL
+# VULNRABLE SERVICES
+echo " *** removing known vulnerable services (these shouldn't be installed)"
+apt-get -yy purge rsh-server
+apt-get -yy purge xinetd
+apt-get -yy purge tftpd
+apt-get -yy purge telnetd
+
+# CURL
 echo " *** install curl if it's not already installed"
 if [ ! -f '/usr/bin/curl' ]; then
 	apt-get -yy install curl
 fi
 
-# INSTALL FIREWALL
+# AUDITD
+echo " *** install auditd if it's not already installed"
+if [ ! -f '/sbin/auditd' ]; then
+	apt-get -yy audispd audispd-plugins
+	# tell grub about it
+	sed -i -e 's/GRUB_CMDLINE_LINUX="/&audit=1/' /etc/default/grub
+	# tell initrd to update
+	update-initramfs -u
+	# regenerate grub
+	update-grub
+	# get rules
+     	curl $baseurl/master/etc/audit.rules -o /etc/audit/audit.rules
+	# start it on boot
+	update-rc.d auditd defaults
+fi
+
+# FIREWALL
 echo " *** creating a *basic* firewall, only allowing 22 by default"
 if [ ! -f '/etc/init.d/firewall' ]; then
      	curl $baseurl/master/bin/firewall -o /etc/init.d/firewall
+	# make executable
 	chmod 755 /etc/init.d/firewall
+	# start it on boot
 	update-rc.d firewall defaults
 fi
 
-# INSTALLING SECURITY PACKAGES
+# SECURITY PACKAGES
 echo " *** installing/verifying we have needed software (an error wouldn't be unexpected!)"
 echo "     (libpam-tmpdir, libpam-cracklib, apparmor-profiles, ntp, openssh-server)"
 apt-get -yy install libpam-tmpdir libpam-cracklib apparmor-profiles ntp openssh-server
 
-# TURNING ON APPARMOR
+# APPARMOR
 if [ `grep -q "security=apparmor" /etc/default/grub; echo $?` == '1' ]; then
 	echo " *** fix the error by putting apparmor line in grub and rebooting"
 	# turn on apparmor in grub
 	sed -i -e 's/GRUB_CMDLINE_LINUX_DEFAULT="/&security=apparmor /' /etc/default/grub
+	# tell initrd to update
+	update-initramfs -u
 	# regenerate grub
 	update-grub
+	# start it on boot
+	update-rc.d apparmor defaults
 fi
 
 # COMPLETE, ENDING
