@@ -59,7 +59,7 @@ When run, this script automatically makes many *serious changes* to the Linux in
 
 ### feedback
 
-Is this a perfect script? No way, if you know a better way to do something or think something I've done is bad, open an [https://github.com/philcryer/tonka32/issues](issue) for it and share your thoughts, *or for bonus points*, make a [https://github.com/blog/712-pull-requests-2-0](pull request!)
+Is this a perfect script? No way, if you know a better way to do something or think something I've done is bad, open an [issue](https://github.com/philcryer/tonka32/issues) for it and share your thoughts, *or for bonus points*, make a [https://github.com/blog/712-pull-requests-2-0](pull request!)
 
 ### background
 1) I read about some great chef recipes that auto hardened ssh and the OS for you...
