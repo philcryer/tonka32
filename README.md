@@ -8,7 +8,7 @@ Get it in run it in with this one liner:
 
     wget https://raw.githubusercontent.com/philcryer/tonka32/master/bin/oneshot.sh; sh oneshot.sh
 
-By default Debian doesn't have <pre>curl</pre> installed, but if you do, you can use this one liner:
+By default Debian doesn't have <code>curl</code> installed, but if you do, you can use this one liner:
     
     curl https://raw.githubusercontent.com/philcryer/tonka32/master/bin/oneshot.sh | sh
     
