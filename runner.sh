@@ -75,7 +75,7 @@ fi
 # AUDITD
 echo " *** install auditd if it's not already installed"
 if [ ! -f '/sbin/auditd' ]; then
-	apt-get -yy audispd audispd-plugins
+	 apt-get install auditd audispd-plugins
 	# tell grub about it
 	sed -i -e 's/GRUB_CMDLINE_LINUX="/&audit=1/' /etc/default/grub
 	# tell initrd to update
@@ -115,6 +115,10 @@ if [ `grep -q "security=apparmor" /etc/default/grub; echo $?` == '1' ]; then
 	# start it on boot
 	update-rc.d apparmor defaults
 fi
+
+# CLEANUP
+echo " *** cleaning unneeded downloads"
+apt-get -yy autoremove; apt-get -yy clean; apt-get -yy autoclean
 
 # COMPLETE, ENDING
 echo " *** all tasks completed"
