@@ -37,6 +37,7 @@ When run, this script automatically makes many *serious changes* to the Linux in
 
 ### other tasks (soon) to be implemented
 * ... harden ssh config
+* ... install/configure fail2ban
 * ... Configures package management e.g. allows only signed packages
 * ... configure pkg management to update security fixes automatically
 * ... Configures pam and pam_limits module

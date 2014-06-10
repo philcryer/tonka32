@@ -1,0 +1,6 @@
+[DEFAULT]
+banaction = iptables-xt_recent-echo
+ignoreip = 127.0.0.1/8 10.1.1.0/24
+bantime = 3600
+#destemail = ops@domain.org
+chain = F2B
