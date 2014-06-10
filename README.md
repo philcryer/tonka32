@@ -93,7 +93,7 @@ http://konstruktoid.net/2014/04/29/hardening-the-ubuntu-14-04-server-even-furthe
 
 ## tonka32?
 
-It's a random password a friend make up when we were creating machines... many years ago when that was considered a good password.
+This was a random password a friend made up when we were creating end-user machines and needed temporary passwords.
 
 ## license
 The MIT License (MIT)
