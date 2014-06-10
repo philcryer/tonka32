@@ -5,6 +5,7 @@ tonka32
 
 A working prototype of a script that automatically lockdowns many things in a default linux install.
 
+## usage
 Get it in run it in with this one liner:
 
     wget https://raw.githubusercontent.com/philcryer/tonka32/master/bin/oneshot.sh; sh oneshot.sh
@@ -15,7 +16,11 @@ By default Debian doesn't have <code>curl</code> installed, but if you do, you c
     
 After it runs successfully, your system will reboot and come up with all the changes listed below.
 
-### tasks
+## support
+
+Current built and tested with Debian GNU/Linux 7+ and Ubuntu 14.04. Centos/RHEL 6.5 support (partially) planned.
+
+## tasks
 
 When run, this script automatically makes many *serious changes* to the Linux install, in an effort to lock it down. Notice that this happens *without any prompts*, so you want to know what it does, to what, and how, before you run it. (testing in Vagrant is highly recommended) These days, I'm assuming you're running a VM or something immutable that is not going to be around long (it's easier to fix something in the provision and just spin out a new instance) so instead, we use this to make a best practices setup, and WHEN we need to change things later we'll just use a fresh VM. 
 
@@ -35,7 +40,7 @@ When run, this script automatically makes many *serious changes* to the Linux in
 	- tells rc.local to restart the script once up so it can get to the other tasks
 * sets up linux auditd with a custom ruleset
 
-### other tasks (soon) to be implemented
+## other tasks (soon) to be implemented
 * ... harden ssh config
 * ... install/configure fail2ban
 * ... Configures package management e.g. allows only signed packages
@@ -59,11 +64,11 @@ When run, this script automatically makes many *serious changes* to the Linux in
 * ... setup stricter fstab mount options
 * ... remove suid bits
 
-### feedback
+## feedback
 
 Is this a perfect script? No way, if you know a better way to do something or think something I've done is bad, open an [issue](https://github.com/philcryer/tonka32/issues) for it and share your thoughts, *or for bonus points*, make a [pull request!](https://github.com/blog/712-pull-requests-2-0)
 
-### background
+## background
 1) I read about some great chef recipes that auto hardened ssh and the OS for you...
 * https://github.com/TelekomLabs/chef-ssh-hardening
 * https://github.com/TelekomLabs?query=hardening
@@ -86,7 +91,7 @@ http://konstruktoid.net/2014/04/29/hardening-the-ubuntu-14-04-server-even-furthe
 
 6) witty script name TBA
 
-### license
+## license
 The MIT License (MIT)
 
 Copyright (c) 2014 Phil Cryer (phil@philcryer.com)
