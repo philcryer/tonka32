@@ -26,7 +26,6 @@ When run, this script automatically makes many *serious changes* to the Linux in
 
 * diables IPv6 (override in config)
 * updates package cache
-* installs curl
 * Remove packages with known issues
 	- xinetd (NSA, Chapter 3.2.1)
 	- inetd (NSA, Chapter 3.2.1)
@@ -39,10 +38,10 @@ When run, this script automatically makes many *serious changes* to the Linux in
 * enables apparmor in grub if it's not already, and reboots to test and enable it
 	- tells rc.local to restart the script once up so it can get to the other tasks
 * sets up linux auditd with a custom ruleset
+* installs and configures fail2ban
 
 ## other tasks (soon) to be implemented
 * ... harden ssh config
-* ... install/configure fail2ban
 * ... Configures package management e.g. allows only signed packages
 * ... configure pkg management to update security fixes automatically
 * ... Configures pam and pam_limits module

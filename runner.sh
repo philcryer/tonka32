@@ -126,19 +126,18 @@ if [ ! -f '/usr/bin/fail2ban-server' ]; then
 	echo " *** making fail2ban not run as root" 
 	useradd --system --no-create-home --home-dir / --groups adm fail2ban 
      	cp etc/jail.local /etc/fail2ban/jail.d/jail.local
-	cp etc/iptables-xt_recent-echo.conf /etc/fail2ban/action.d/iptables-xt_recent-echo.conf
-	#sed -i -e 's/actionstart\ \=\ iptables$/actionstart\ \=' /etc/fail2ban/action.d/iptables-xt_recent-echo.conf
 	sed -i -e 's/FAIL2BAN_USER=root/FAIL2BAN_USER=fail2ban /' /etc/init.d/fail2ban
 	sed -i -e 's/create\ 640\ root\ adm/#create\ 640\ root\ adm/' /etc/logrotate.d/fail2ban
 
 	sed -i -e 's/#\ create\ 640\ fail2ban\ adm/create\ 640\ fail2ban\ adm/' /etc/logrotate.d/fail2ban
-	iptables -N F2B
-	iptables -A INPUT -i any -p tcp --dport 22 -j F2B
-	iptables -A INPUT -i any -p tcp --dport 22 -j ACCEPT
-	iptables -A FORWARD -i any -p tcp --dport 22 -j F2B
-	iptables -A FORWARD -i any -p tcp --dport 22 -j ACCEPT
-	iptables -A F2B -p tcp --dport 22 -m recent --update --seconds 3600 --name fail2ban-ssh -j DROP
-	iptables -A F2B -j RETURN
+	###cp etc/iptables-xt_recent-echo.conf /etc/fail2ban/action.d/iptables-xt_recent-echo.conf
+	####iptables -N F2B
+	####iptables -A INPUT -i any -p tcp --dport 22 -j F2B
+	####iptables -A INPUT -i any -p tcp --dport 22 -j ACCEPT
+	####iptables -A FORWARD -i any -p tcp --dport 22 -j F2B
+	####iptables -A FORWARD -i any -p tcp --dport 22 -j ACCEPT
+	####iptables -A F2B -p tcp --dport 22 -m recent --update --seconds 3600 --name fail2ban-ssh -j DROP
+	####iptables -A F2B -j RETURN
 	chown fail2ban:adm /var/log/fail2ban.log
 	update-rc.d fail2ban defaults
 	/etc/init.d/fail2ban start
