@@ -91,6 +91,10 @@ http://konstruktoid.net/2014/04/29/hardening-the-ubuntu-14-04-server-even-furthe
 
 6) witty script name TBA
 
+## tonka32?
+
+It's a random password a friend make up when we were creating machines... many years ago when that was considered a good password.
+
 ## license
 The MIT License (MIT)
 
