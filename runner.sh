@@ -118,7 +118,7 @@ apt-get -yy install libpam-tmpdir libpam-cracklib ntp openssh-server
 # APPARMOR
 echo " *** installing apparmor"
 if [ `grep -q "security=apparmor" /etc/default/grub; echo $?` == '1' ]; then
-	apt-get apparmor-profiles
+	apt-get install apparmor-profiles
 	echo "	> turning on apparmor in grub"
 	# turn on apparmor in grub
 	sed -i -e 's/GRUB_CMDLINE_LINUX_DEFAULT="/&security=apparmor /' /etc/default/grub
