@@ -96,7 +96,8 @@ if [ ! -f '/etc/init.d/firewall' ]; then
 	# make executable
 	chmod 755 /etc/init.d/firewall
 	# start it on boot
-	update-rc.d firewall defaults
+        #update-rc.d firewall defaults
+        update-rc.d firewall remove
 fi
 
 # SECURITY PACKAGES
