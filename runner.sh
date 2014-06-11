@@ -161,12 +161,25 @@ if [ ! -f '/usr/bin/fail2ban-server' ]; then
 	#/etc/init.d/fail2ban start
 fi
 
-echo -e " $bs*** install pollinate for better entrophy$be"
+echo -e " $bs*** harden kernel parameters via sysctl$be"
+if [ ! -f '/etc/sysctl.d/99-tcp-ip-hardening.conf' ]; then
+	echo "	> improve network performance"
+	cp etc/99-tcp-ip-hardening.conf /etc/sysctl.d/
+	echo "	> set dirty bytes small(er)"
+ 	cp etc/99-dirty-bytes.conf /etc/sysctl.d/
+	echo "	> setting to start on boot"
+	cp etc/99-virtual-memory-hardening.conf /etc/sysctl.d/
+fi
+
+echo -e " $bs*** install pollinate for better entrophy generation$be"
 if [ ! -f '/usr/bin/pollinate' ]; then
 	apt-get install pollinate; 
 	echo "	> setting to start on boot"
 	update-rc.d pollinate defaults
 fi
+
+echo -e " $bs*** removing suid bits$be"
+	chmod -s /bin/fusermount /bin/mount /bin/su /bin/umount /usr/bin/bsd-write /usr/bin/chage /usr/bin/chfn /usr/bin/chsh /usr/bin/mlocate /usr/bin/mtr /usr/bin/newgrp /usr/bin/traceroute6.iputils /usr/bin/wall
 
 # CLEANUP
 echo -e " $bs*** cleaning unneeded installs and downloads$be"

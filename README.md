@@ -44,6 +44,12 @@ When run, this script automatically makes many *serious changes* to the Linux in
 * sets up linux auditd with a custom ruleset
 * installs and configures fail2ban
 * installs and configures pollinate (an Entropy-as-a-Service client) [info](http://blog.dustinkirkland.com/2014/02/random-seeds-in-ubuntu-1404-lts-cloud.html)
+* configures kernel parameters via sysctl [source](https://wiki.archlinux.org/index.php/Sysctl)
+	- improve network perf
+	- tcp/ip stack hardening
+	- harden virtual memory settings
+	- set dirty bytes small(er)
+* remove suid bits [source](http://konstruktoid.net/2014/04/29/hardening-the-ubuntu-14-04-server-even-further/)
 
 ## other tasks (soon) to be implemented
 * ... harden ssh config
@@ -55,22 +61,17 @@ When run, this script automatically makes many *serious changes* to the Linux in
 * ... Disable core dumps via soft limits
 * ... Restrict Root Logins to System Console
 * ... Set SUIDs
-* ... Configures kernel parameters via sysctl
-	- improve network perf
-	- tcp/ip stack hardening
-	- virtual memory
-	- set dirty bytes small
 * ... add umask 077 to /etc/bash.bashrc
 * ... setup host.allow and hosts.deny
 * ... lock down logins.defs
 * ... fix pamd sessions/config
 * ... set security limits in limits.conf
 * ... setup stricter fstab mount options
-* ... remove suid bits
 
 ## feedback
 
-Is this a perfect script? No way, if you know a better way to do something or think something I've done is bad, open an [issue](https://github.com/philcryer/tonka32/issues) for it and share your thoughts, *or for bonus points*, make a [pull request!](https://github.com/blog/712-pull-requests-2-0)
+
+s this a perfect script? No way, if you know a better way to do something or think something I've done is bad, open an [issue](https://github.com/philcryer/tonka32/issues) for it and share your thoughts, *or for bonus points*, make a [pull request!](https://github.com/blog/712-pull-requests-2-0)
 
 ## background
 1) I read about some great chef recipes that auto hardened ssh and the OS for you...
