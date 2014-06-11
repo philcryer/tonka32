@@ -144,6 +144,11 @@ if [ ! -f '/usr/bin/fail2ban-server' ]; then
 	#/etc/init.d/fail2ban start
 fi
 
+echo " *** install pollinate"
+if [ ! -f '/usr/bin/pollinate' ]; then
+	apt-get install pollinate; update-rc.d pollinate defaults
+fi
+
 # CLEANUP
 echo " *** cleaning unneeded downloads"
 apt-get -yy autoremove; apt-get -yy clean; apt-get -yy autoclean

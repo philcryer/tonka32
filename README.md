@@ -16,6 +16,10 @@ By default Debian doesn't have <code>curl</code> installed, but if you do, you c
     
 After it runs successfully, your system will reboot and come up with all the changes listed below.
 
+## background
+
+We need to lock down our Linux installs better, all the time regardless of baremetal, VM, docker, whatever. Some distros are doing a better job at [locking things down by default](https://wiki.ubuntu.com/Security/Features) but we can, and should, do better.
+
 ## support
 
 Current built and tested with Debian GNU/Linux 7+ and Ubuntu 14.04. Centos/RHEL 6.5 support (partially) planned.
@@ -39,6 +43,7 @@ When run, this script automatically makes many *serious changes* to the Linux in
 	- tells rc.local to restart the script once up so it can get to the other tasks
 * sets up linux auditd with a custom ruleset
 * installs and configures fail2ban
+* installs and configures pollinate (an Entropy-as-a-Service client) [info](http://blog.dustinkirkland.com/2014/02/random-seeds-in-ubuntu-1404-lts-cloud.html)
 
 ## other tasks (soon) to be implemented
 * ... harden ssh config
@@ -92,7 +97,7 @@ http://konstruktoid.net/2014/04/29/hardening-the-ubuntu-14-04-server-even-furthe
 
 ## tonka32?
 
-This was a random password a friend made up when we were creating end-user machines and needed temporary passwords.
+This was a random password a friend made up when we were creating end-user machines and needed temporary passwords. H/t fern.
 
 ## license
 The MIT License (MIT)
