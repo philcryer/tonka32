@@ -5,15 +5,15 @@ set -e
 # VARIABLES
 baseurl="https://raw.githubusercontent.com/philcryer/tonka32/"
 ipv6_off="1"
-
 bs="\033[1m"
 be="\033[0m"
+
 # PROGRAM START
 clear
 echo -e " $bs***$be"
 echo -e " $bs*** starting on host `hostname` running `cat /etc/issue.net`$be"; sleep 1
 
-# ROOT CHECK
+# ROOT DOWN, I KICK IT ROOT DOWN
 echo -e " $bs*** checking permissions$be"
 if [[ $EUID -ne 0 ]]; then
 	echo " --- FAIL ---- This script makes big changes, so it must be run as root" 1>&2
@@ -27,6 +27,7 @@ if [[ $ipv6_off -eq 1 ]]; then
 	#echo " *** disabling IPV6 (override in variables section)"
 	if [ ! -f '/etc/sysctl.d/disableipv6.conf' ]; then
 		# tell sysctl about it
+		echo "	> updating sysctl"
 		echo "	> rewriting configuration files"
 		echo net.ipv6.conf.all.disable_ipv6=1 > /etc/sysctl.d/disableipv6.conf
 		echo net.ipv6.conf.default.disable_ipv6=1 >> /etc/sysctl.d/disableipv6.conf
@@ -40,18 +41,22 @@ if [[ $ipv6_off -eq 1 ]]; then
 		echo net.ipv6.conf.ppp0.disable_ipv6=1 >> /etc/sysctl.d/disableipv6.conf
 		echo net.ipv6.conf.tun0.disable_ipv6=1 >> /etc/sysctl.d/disableipv6.conf
 		# tell modprobe about it
+		echo "	> updating modprobe"
 		echo "alias net-pf-10 off" >> /etc/modprobe.d/aliases.conf
 		echo "alias ipv6 off" >> /etc/modprobe.d/aliases.conf
 		# tell etc/hosts about it
+		echo "	> updating hosts file"
 		sed '/::/s/^/#/' /etc/hosts >/etc/dipv6-tmp;cp -a /etc/hosts /etc/hosts-backup && mv /etc/dipv6-tmp /etc/hosts
 		# tell etc/protocols about it
+		echo "	> updating etc/profiles"
 		sed '/^ipv6/s/^/#/' /etc/protocols >/etc/protocols-tmp;cp -a /etc/protocols /etc/protocols-backup && mv /etc/protocols-tmp /etc/protocols
 		# tell avahi about it (only if we have avahi installed)
 		if [ -d '/etc/avahi' ]; then
+		echo "	> updating avahi"
 			sed '/ipv6=yes/s/yes/no/' /etc/avahi/avahi-daemon.conf >/etc/avahi/dipv6-tmp;cp -a /etc/avahi/avahi-daemon.conf /etc/avahi/avahi-daemon.conf-backup && mv /etc/avahi/dipv6-tmp /etc/avahi/avahi-daemon.conf
 		fi
 		# tell grub about it
-		echo "	> telling grub we don't want ipv6"
+		echo "	> updating grub to not use ipv6"
 		sed -i -e 's/GRUB_CMDLINE_LINUX_DEFAULT="/&ipv6.disable=1 /' /etc/default/grub
 		echo "	> updating grub"
 		# tell initrd to update
@@ -90,8 +95,8 @@ if [ ! -f '/sbin/auditd' ]; then
 	update-initramfs -u
 	# regenerate grub
 	update-grub
-	# get rules
 	# start it on boot
+	echo "	> setting to start on boot"
 	update-rc.d auditd defaults
 fi
 
@@ -103,7 +108,8 @@ if [ ! -f '/etc/init.d/firewall' ]; then
 	chmod 755 /etc/init.d/firewall
 	# start it on boot
         #update-rc.d firewall defaults
-        update-rc.d -f firewall remove
+	echo "	> setting to start on boot"
+        update-rc.d -f firewall defaults
 fi
 
 # SECURITY PACKAGES
@@ -124,6 +130,7 @@ if [ `grep -q "security=apparmor" /etc/default/grub; echo $?` == '1' ]; then
 	# regenerate grub
 	update-grub
 	# start it on boot
+	echo "	> setting to start on boot"
 	update-rc.d apparmor defaults
 fi
 
@@ -149,13 +156,16 @@ if [ ! -f '/usr/bin/fail2ban-server' ]; then
 	####iptables -A F2B -p tcp --dport 22 -m recent --update --seconds 3600 --name fail2ban-ssh -j DROP
 	####iptables -A F2B -j RETURN
 	#chown fail2ban:adm /var/log/fail2ban.log
+	echo "	> setting to start on boot"
 	update-rc.d fail2ban defaults
 	#/etc/init.d/fail2ban start
 fi
 
 echo -e " $bs*** install pollinate for better entrophy$be"
 if [ ! -f '/usr/bin/pollinate' ]; then
-	apt-get install pollinate; update-rc.d pollinate defaults
+	apt-get install pollinate; 
+	echo "	> setting to start on boot"
+	update-rc.d pollinate defaults
 fi
 
 # CLEANUP
