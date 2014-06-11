@@ -8,7 +8,7 @@ ipv6_off="1"
 bs="\033[1m"
 be="\033[0m"
 
-# PROGRAM START
+# STARTING
 clear
 echo -e " $bs***$be"
 echo -e " $bs*** starting on host `hostname` running `cat /etc/issue.net`$be"; sleep 1

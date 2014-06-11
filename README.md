@@ -38,10 +38,10 @@ When run, this script automatically makes many *serious changes* to the Linux in
 	- telnet-server (NSA, Chapter 3.2.2)
 	- rsh-server (NSA, Chapter 3.2.3)
 * sets up a basic firewall that ONLY allows port 22 (optional: lock down to allow access from only one IP)
-* installs libpam-tmpdir, libpam-cracklib, apparmor-profiles, ntp, openssh-server that will get used/configured later
-* enables apparmor in grub if it's not already, and reboots to test and enable it
-	- tells rc.local to restart the script once up so it can get to the other tasks
-* sets up linux auditd with a custom ruleset
+* installs libpam-tmpdir, libpam-cracklib, ntp, openssh-server that will get used/configured later
+* installs apparmor [source](http://konstruktoid.net/2014/04/29/hardening-the-ubuntu-14-04-server-even-further/)
+	- adds it to grub if it's not already
+* sets up linux auditd with a custom ruleset [(source)](http://konstruktoid.net/2014/04/29/hardening-the-ubuntu-14-04-server-even-further/)
 * installs and configures fail2ban
 * installs and configures pollinate (an Entropy-as-a-Service client) [info](http://blog.dustinkirkland.com/2014/02/random-seeds-in-ubuntu-1404-lts-cloud.html)
 * configures kernel parameters via sysctl [source](https://wiki.archlinux.org/index.php/Sysctl)
