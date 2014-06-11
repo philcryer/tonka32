@@ -1,6 +1,16 @@
 [DEFAULT]
-banaction = iptables-xt_recent-echo
-ignoreip = 127.0.0.1/8 10.1.1.0/24
-bantime = 3600
-#destemail = ops@domain.org
-chain = F2B
+# “ignoreip” can be an IP address, a CIDR mask or a DNS host
+ignoreip = 127.0.0.1 172.31.0.0/24 10.10.0.0/24 192.168.0.0/24
+bantime = 86400
+maxretry = 5
+
+[ssh-iptables]
+enabled = true
+filter = sshd
+action = iptables[name=SSH, port=ssh, protocol=tcp]
+#sendmail-whois[name=SSH, dest=you@mail.com, sender=fail2ban@mail.com]
+logpath = /var/log/auth.log
+maxretry = 5
+
+# #logpath=/var/log/secure (for RedHat,CentOS,Fedora)
+#

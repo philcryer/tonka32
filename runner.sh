@@ -126,7 +126,7 @@ if [ ! -f '/usr/bin/fail2ban-server' ]; then
 	#/etc/init.d/fail2ban stop
 	#echo " *** making fail2ban not run as root" 
 	#useradd --system --no-create-home --home-dir / --groups adm fail2ban 
-     	#cp etc/jail.local /etc/fail2ban/jail.d/jail.local
+     	cp etc/jail.local /etc/fail2ban/jail.d/jail.local
 	#sed -i -e 's/FAIL2BAN_USER=root/FAIL2BAN_USER=fail2ban /' /etc/init.d/fail2ban
 	#sed -i -e 's/create\ 640\ root\ adm/#create\ 640\ root\ adm/' /etc/logrotate.d/fail2ban
 
