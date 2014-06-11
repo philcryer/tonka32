@@ -145,6 +145,14 @@ fi
 echo -e " $bs*** removing suid bits$be"
 	chmod -s /bin/fusermount /bin/mount /bin/su /bin/umount /usr/bin/bsd-write /usr/bin/chage /usr/bin/chfn /usr/bin/chsh /usr/bin/mlocate /usr/bin/mtr /usr/bin/newgrp /usr/bin/traceroute6.iputils /usr/bin/wall
 
+# CLOUD_INIT
+
+echo -e " $bs*** removing cloud init$be"
+if [ ! -f '/usr/bin/cloud-init' ]; then
+	apt-get purge cloud-init
+	rm -rf /etc/cloud/build.info /var/lib/cloud/
+fi
+
 # CLEANUP
 echo -e " $bs*** cleaning unneeded installs and downloads$be"
 	echo "	> clean"
