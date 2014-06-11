@@ -23,6 +23,7 @@ if [[ $ipv6_off -eq 1 ]]; then
 	#echo " *** disabling IPV6 (override in variables section)"
 	if [ ! -f '/etc/sysctl.d/disableipv6.conf' ]; then
 		# tell sysctl about it
+		echo "	> rewriting configuration files"
 		echo net.ipv6.conf.all.disable_ipv6=1 > /etc/sysctl.d/disableipv6.conf
 		echo net.ipv6.conf.default.disable_ipv6=1 >> /etc/sysctl.d/disableipv6.conf
 		echo net.ipv6.conf.eth0.disable_ipv6=1 >> /etc/sysctl.d/disableipv6.conf
@@ -46,7 +47,9 @@ if [[ $ipv6_off -eq 1 ]]; then
 			sed '/ipv6=yes/s/yes/no/' /etc/avahi/avahi-daemon.conf >/etc/avahi/dipv6-tmp;cp -a /etc/avahi/avahi-daemon.conf /etc/avahi/avahi-daemon.conf-backup && mv /etc/avahi/dipv6-tmp /etc/avahi/avahi-daemon.conf
 		fi
 		# tell grub about it
+		echo "	> telling grub we don't want ipv6"
 		sed -i -e 's/GRUB_CMDLINE_LINUX_DEFAULT="/&ipv6.disable=1 /' /etc/default/grub
+		echo "	> updating grub"
 		# tell initrd to update
 		update-initramfs -u
 		# regenerate grub
@@ -60,9 +63,13 @@ apt-get -yy update
 
 # VULNRABLE SERVICES
 echo " *** removing known vulnerable services (these shouldn't be installed, it's freaking `date +%Y`!)"
+	echo "	> rsh-server"
 apt-get -yy purge rsh-server
+	echo "	> xinetd"
 apt-get -yy purge xinetd
+	echo "	> tftpd"
 apt-get -yy purge tftpd
+	echo "	> telnetd"
 apt-get -yy purge telnetd
 
 # CURL
@@ -76,14 +83,17 @@ echo " *** install auditd if it's not already installed"
 if [ ! -f '/sbin/auditd' ]; then
 	 apt-get -yy install auditd audispd-plugins
 	# tell grub about it
+	echo "	> configuring auditd"
+     	cp etc/audit.rules /etc/audit/audit.rules
+	echo "	> turning on auditd in grub"
 	sed -i -e 's/GRUB_CMDLINE_LINUX="/&audit=1/' /etc/default/grub
+	echo "	> updating grub"
 	# tell initrd to update
 	update-initramfs -u
 	# regenerate grub
 	update-grub
 	# get rules
      	#curl $baseurl/master/etc/audit.rules -o /etc/audit/audit.rules
-     	cp etc/audit.rules /etc/audit/audit.rules
 	# start it on boot
 	update-rc.d auditd defaults
 fi
@@ -101,16 +111,18 @@ if [ ! -f '/etc/init.d/firewall' ]; then
 fi
 
 # SECURITY PACKAGES
-echo " *** installing/verifying we have needed software (an error wouldn't be unexpected!)"
+echo " *** installing/verifying we have needed software"
 echo "     (libpam-tmpdir, libpam-cracklib, apparmor-profiles, ntp, openssh-server)"
-apt-get -yy install libpam-tmpdir libpam-cracklib apparmor-profiles ntp openssh-server
+apt-get -yy install libpam-tmpdir libpam-cracklib ntp openssh-server
 
 # APPARMOR
-echo " *** enabling apparmor"
+echo " *** installing apparmor"
 if [ `grep -q "security=apparmor" /etc/default/grub; echo $?` == '1' ]; then
-	echo " *** fix the error by putting apparmor line in grub and rebooting"
+	apt-get apparmor-profiles
+	echo "	> turning on apparmor in grub"
 	# turn on apparmor in grub
 	sed -i -e 's/GRUB_CMDLINE_LINUX_DEFAULT="/&security=apparmor /' /etc/default/grub
+	echo "	> updating grub"
 	# tell initrd to update
 	update-initramfs -u
 	# regenerate grub
@@ -126,6 +138,7 @@ if [ ! -f '/usr/bin/fail2ban-server' ]; then
 	#/etc/init.d/fail2ban stop
 	#echo " *** making fail2ban not run as root" 
 	#useradd --system --no-create-home --home-dir / --groups adm fail2ban 
+	echo "	> configuring fail2ban to block bad ssh logins"
      	cp etc/jail.local /etc/fail2ban/jail.d/jail.local
 	#sed -i -e 's/FAIL2BAN_USER=root/FAIL2BAN_USER=fail2ban /' /etc/init.d/fail2ban
 	#sed -i -e 's/create\ 640\ root\ adm/#create\ 640\ root\ adm/' /etc/logrotate.d/fail2ban
@@ -144,14 +157,19 @@ if [ ! -f '/usr/bin/fail2ban-server' ]; then
 	#/etc/init.d/fail2ban start
 fi
 
-echo " *** install pollinate"
+echo " *** install pollinate for better entrophy"
 if [ ! -f '/usr/bin/pollinate' ]; then
 	apt-get install pollinate; update-rc.d pollinate defaults
 fi
 
 # CLEANUP
-echo " *** cleaning unneeded downloads"
-apt-get -yy autoremove; apt-get -yy clean; apt-get -yy autoclean
+echo " *** cleaning unneeded installs and downloads"
+	echo "	> clean"
+	apt-get -yy clean; 
+	echo "	> autoclean"
+	apt-get -yy autoclean
+	echo "	> autoremove"
+	apt-get -yy autoremove; 
 
 # COMPLETE
 echo " *** all tasks completed"
