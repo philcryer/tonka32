@@ -6,11 +6,13 @@ set -e
 baseurl="https://raw.githubusercontent.com/philcryer/tonka32/"
 ipv6_off="1"
 
+bs="\033[1m"
+be="\033[0m"
 # PROGRAM START
-echo " *** starting on host `hostname` running `cat /etc/issue.net`"; sleep 1
+echo -e " $bs*** starting on host `hostname` running `cat /etc/issue.net`$be"; sleep 1
 
 # ROOT CHECK
-echo " *** checking permissions"
+echo -e " $bs*** checking permissions$be"
 if [[ $EUID -ne 0 ]]; then
 	echo " --- FAIL ---- This script makes big changes, so it must be run as root" 1>&2
        	echo "               (read and understand what this script does before you install it)" 1>&2
@@ -18,7 +20,7 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 # IPV6
-echo " *** disabling IPV6 (override in variables section)"
+echo -e " $bs*** disabling IPV6 (override in variables section)$be"
 if [[ $ipv6_off -eq 1 ]]; then
 	#echo " *** disabling IPV6 (override in variables section)"
 	if [ ! -f '/etc/sysctl.d/disableipv6.conf' ]; then
@@ -58,11 +60,11 @@ if [[ $ipv6_off -eq 1 ]]; then
 fi
 
 # PACKAGE CACHE
-echo " *** updating package cache"
+echo -e " $bs*** updating package cache$be"
 apt-get -yy update
 
 # VULNRABLE SERVICES
-echo " *** removing known vulnerable services (these shouldn't be installed, it's freaking `date +%Y`!)"
+echo -e " $bs*** removing known vulnerable services (these shouldn't be installed, it's freaking `date +%Y`!)$be"
 	echo "	> rsh-server"
 apt-get -yy purge rsh-server
 	echo "	> xinetd"
@@ -72,14 +74,8 @@ apt-get -yy purge tftpd
 	echo "	> telnetd"
 apt-get -yy purge telnetd
 
-# CURL
-#echo " *** install curl if it's not already installed"
-#if [ ! -f '/usr/bin/curl' ]; then
-#	apt-get -yy install curl
-#fi
-
 # AUDITD
-echo " *** install auditd if it's not already installed"
+echo -e " $bs*** install auditd if it's not already installed$be"
 if [ ! -f '/sbin/auditd' ]; then
 	 apt-get -yy install auditd audispd-plugins
 	# tell grub about it
@@ -93,15 +89,13 @@ if [ ! -f '/sbin/auditd' ]; then
 	# regenerate grub
 	update-grub
 	# get rules
-     	#curl $baseurl/master/etc/audit.rules -o /etc/audit/audit.rules
 	# start it on boot
 	update-rc.d auditd defaults
 fi
 
 # FIREWALL
-echo " *** creating a *basic* firewall, only allowing 22/80/443 by default"
+echo -e " $bs*** creating a *basic* firewall, only allowing 22/80/443 by default$be"
 if [ ! -f '/etc/init.d/firewall' ]; then
-     	#curl $baseurl/master/bin/firewall -o /etc/init.d/firewall
      	cp bin/firewall /etc/init.d/firewall
 	# make executable
 	chmod 755 /etc/init.d/firewall
@@ -111,12 +105,12 @@ if [ ! -f '/etc/init.d/firewall' ]; then
 fi
 
 # SECURITY PACKAGES
-echo " *** installing/verifying we have needed software"
+echo -e " $bs*** installing needed software$be"
 echo "     (libpam-tmpdir, libpam-cracklib, apparmor-profiles, ntp, openssh-server)"
 apt-get -yy install libpam-tmpdir libpam-cracklib ntp openssh-server
 
 # APPARMOR
-echo " *** installing apparmor"
+echo -e " $bs*** installing apparmor$be"
 if [ `grep -q "security=apparmor" /etc/default/grub; echo $?` == '1' ]; then
 	apt-get install apparmor-profiles
 	echo "	> turning on apparmor in grub"
@@ -132,7 +126,7 @@ if [ `grep -q "security=apparmor" /etc/default/grub; echo $?` == '1' ]; then
 fi
 
 # FAIL2BAN
-echo " *** install fail2ban"
+echo -e " $bs*** install fail2ban$be"
 if [ ! -f '/usr/bin/fail2ban-server' ]; then 
 	apt-get install fail2ban -yy
 	#/etc/init.d/fail2ban stop
@@ -157,13 +151,13 @@ if [ ! -f '/usr/bin/fail2ban-server' ]; then
 	#/etc/init.d/fail2ban start
 fi
 
-echo " *** install pollinate for better entrophy"
+echo -e " $bs*** install pollinate for better entrophy$be"
 if [ ! -f '/usr/bin/pollinate' ]; then
 	apt-get install pollinate; update-rc.d pollinate defaults
 fi
 
 # CLEANUP
-echo " *** cleaning unneeded installs and downloads"
+echo -e " $bs*** cleaning unneeded installs and downloads$be"
 	echo "	> clean"
 	apt-get -yy clean; 
 	echo "	> autoclean"
@@ -172,10 +166,10 @@ echo " *** cleaning unneeded installs and downloads"
 	apt-get -yy autoremove; 
 
 # COMPLETE
-echo " *** all tasks completed"
+echo -e " $bs*** all tasks completed$be"
 
 # REBOOT (aka drop test of the above changes)
-echo " *** rebooting to enable all new settings and to test"
+echo -e " $bs*** rebooting to enable all new settings and to test$be"
 /sbin/reboot; echo
 
 exit 0
