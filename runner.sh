@@ -22,6 +22,10 @@ if [[ $EUID -ne 0 ]]; then
 	exit 1
 fi
 
+# PACKAGE CACHE
+echo -e " $bs*** updating package cache$be"
+apt-get -yy update
+
 # IPV6
 echo -e " $bs*** disabling IPV6 (override in variables section)$be"
 if [[ $ipv6_off -eq 1 ]]; then
@@ -56,10 +60,6 @@ if [[ $ipv6_off -eq 1 ]]; then
 		update-grub
 	fi
 fi
-
-# PACKAGE CACHE
-echo -e " $bs*** updating package cache$be"
-apt-get -yy update
 
 # VULNRABLE SERVICES
 echo -e " $bs*** removing known vulnerable services (these shouldn't be installed, it's freaking `date +%Y`!)$be"
