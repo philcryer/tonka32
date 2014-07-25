@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# sureshot
+# --------
+# You Can't, You Won't And You Don't Stop 
+# You Can't, You Won't And You Don't Stop 
+# You Can't, You Won't And You Don't Stop 
+# Mike D Come On And Rock The Sure Shot 
+
 set -e
 
 # USER VARIABLES
@@ -9,7 +16,7 @@ ipv6_off="1"
 bs="\033[1m"
 be="\033[0m"
 
-# STARTING
+# STARTING THE GAME
 clear
 echo -e " $bs***$be"
 echo -e " $bs*** starting on host `hostname` running `cat /etc/issue.net`$be"; sleep 1
@@ -22,9 +29,29 @@ if [[ $EUID -ne 0 ]]; then
 	exit 1
 fi
 
+# ONLY ALLOW AUTHENTICATED PACKAGES
+#* ... Configures package management e.g. allows only signed packages
+#http://www.zdnet.com/blog/open-source/how-to-lock-down-linux/9665
+echo -e " $bs*** setting package manager to only allow signed packages$be"
+mv etc/99dontallowunauth /etc/apt/apt.conf.d/
+# if rhel/centos then...
+	#rpm --verify -all
+#"Please read the rpm man page for information on how to interpret the output of this command." On Debian-Linux based systems, such as Mint or Ubuntu, it's more complicated. From a Bash shell you need to run the following:
+	#else
+#dpkg -l \*|while read s n rest; do if [ "$s" == "ii" ]; then echo $n; fi; done > ~/tmp.txt for f in `cat ~/tmp.txt`; do debsums -s -a $f; done
+#apt-get install debsums
+# this takes a long time... is there a better way?
+#dpkg -l \*|while read s n rest; do if [ "$s" == "ii" ]; then echo $n; fi; done > ~/tmp.txt; for f in `cat ~/tmp.txt`; do debsums -s -a $f; done
+
 # PACKAGE CACHE
 echo -e " $bs*** updating package cache$be"
 apt-get -yy update
+
+# UNATTENDED/AUTOMATED UPDATES
+echo -e " $bs*** setting up unattended/automated updates$be"
+apt-get -yy install unattended-upgrades
+mv etc/10periodic /etc/apt/apt.conf.d/
+mv etc/50unattended-upgrades /etc/apt/apt.conf.d/
 
 # IPV6
 echo -e " $bs*** disabling IPV6 (override in variables section)$be"
@@ -146,7 +173,6 @@ echo -e " $bs*** removing suid bits$be"
 	chmod -s /bin/fusermount /bin/mount /bin/su /bin/umount /usr/bin/bsd-write /usr/bin/chage /usr/bin/chfn /usr/bin/chsh /usr/bin/mlocate /usr/bin/mtr /usr/bin/newgrp /usr/bin/traceroute6.iputils /usr/bin/wall
 
 # CLOUD_INIT
-
 echo -e " $bs*** removing cloud init$be"
 if [ ! -f '/usr/bin/cloud-init' ]; then
 	apt-get purge cloud-init

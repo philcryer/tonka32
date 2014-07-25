@@ -49,12 +49,12 @@ When run, this script automatically makes many *serious changes* to the Linux in
 	- tcp/ip stack hardening
 	- harden virtual memory settings
 	- set dirty bytes small(er)
-* remove suid bits [source](http://konstruktoid.net/2014/04/29/hardening-the-ubuntu-14-04-server-even-further/)
+* removes suid bits [source](http://konstruktoid.net/2014/04/29/hardening-the-ubuntu-14-04-server-even-further/)
+* configures package management to only install signed packages [source](http://www.zdnet.com/blog/open-source/how-to-lock-down-linux/9665)
+* sets up unattended, automated security updates [source](http://plusbryan.com/my-first-5-minutes-on-a-server-or-essential-security-for-linux-servers)
 
 ## other tasks (soon) to be implemented
 * ... harden ssh config
-* ... Configures package management e.g. allows only signed packages
-* ... configure pkg management to update security fixes automatically
 * ... Configures pam and pam_limits module
 * ... Shadow password suite configuration
 * ... Configures system path permissions
