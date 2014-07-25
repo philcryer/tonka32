@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # sureshot
 # --------
@@ -18,22 +18,30 @@ be="\033[0m"
 
 # STARTING THE GAME
 clear
-echo -e " $bs***$be"
+echo
+echo -e "\033[38;5;255m\033[48;5;234m\033[1m  S U R E S H O T  \033[0m"
+echo -e "\033[38;5;255m\033[48;5;234m\033[1m ----------------- \033[0m"
+echo -e "\033[38;5;255m\033[48;5;234m\033[1m  server lockdown  \033[0m"
+echo
+if [ ! -f '/etc/issue.net' ]; then
+	echo " --- FAIL --- Hey wait a minute, this is not Linux, what are you a wiseguy?"
+	exit 1
+	fi
 echo -e " $bs*** starting on host `hostname` running `cat /etc/issue.net`$be"; sleep 1
 
 # ROOT DOWN, I KICK IT ROOT DOWN!
 echo -e " $bs*** checking permissions$be"
 if [[ $EUID -ne 0 ]]; then
-	echo " --- FAIL ---- This script makes big changes, so it must be run as root" 1>&2
+	echo " --- FAIL --- This script makes big changes, so it must be run as root" 1>&2
        	echo "               (read and understand what this script does before you install it)" 1>&2
 	exit 1
 fi
 
 # ONLY ALLOW AUTHENTICATED PACKAGES
-#* ... Configures package management e.g. allows only signed packages
-#http://www.zdnet.com/blog/open-source/how-to-lock-down-linux/9665
 echo -e " $bs*** setting package manager to only allow signed packages$be"
 mv etc/99dontallowunauth /etc/apt/apt.conf.d/
+#* ... Configures package management e.g. allows only signed packages
+#http://www.zdnet.com/blog/open-source/how-to-lock-down-linux/9665
 # if rhel/centos then...
 	#rpm --verify -all
 #"Please read the rpm man page for information on how to interpret the output of this command." On Debian-Linux based systems, such as Mint or Ubuntu, it's more complicated. From a Bash shell you need to run the following:
