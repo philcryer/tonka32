@@ -127,9 +127,9 @@ echo -e " $bs*** creating a *basic* firewall, only allowing 22/80/443 by default
 if [ ! -f '/etc/init.d/firewall' ]; then
      	cp bin/firewall /etc/init.d/firewall
 	echo "	> making script executable"
-	chmod 755 /etc/init.d/firewall
+	#chmod 755 /etc/init.d/firewall
 	echo "	> setting to start on boot"
-        update-rc.d -f firewall defaults
+        #update-rc.d -f firewall defaults
 fi
 
 # SECURITY PACKAGES
