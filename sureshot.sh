@@ -53,7 +53,7 @@ mv etc/99dontallowunauth /etc/apt/apt.conf.d/
 
 # PACKAGE CACHE
 echo -e " $bs*** updating package cache$be"
-apt-get -yy update
+##apt-get -yy update
 
 # UNATTENDED/AUTOMATED UPDATES
 echo -e " $bs*** setting up unattended/automated updates$be"
